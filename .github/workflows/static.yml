@@ -42,7 +42,8 @@ jobs:
           with app.test_client() as client:
               response = client.get("/")
               response.raise_for_status()
-
+              if response.status_code != 200:
+                raise RuntimeError(f"Failed to render page: HTTP {response.status_code}")
               with open("dist/index.html", "wb") as f:
                   f.write(response.data)
           PY
